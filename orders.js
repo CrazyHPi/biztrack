@@ -20,6 +20,30 @@ function closeForm() {
 
 let orders = [];
 
+function validateOrderInput(itemPrice, qtyBought, shipping, taxes) {
+  if (!Number.isFinite(itemPrice) || itemPrice < 0) {
+    alert("Item price must be a valid non-negative number.");
+    return false;
+  }
+
+  if (!Number.isInteger(qtyBought) || qtyBought < 1) {
+    alert("Quantity bought must be a whole number greater than 0.");
+    return false;
+  }
+
+  if (!Number.isFinite(shipping) || shipping < 0) {
+    alert("Shipping fee must be a valid non-negative number.");
+    return false;
+  }
+
+  if (!Number.isFinite(taxes) || taxes < 0) {
+    alert("Taxes must be a valid non-negative number.");
+    return false;
+  }
+
+  return true;
+}
+
 window.onload = function () {
     const storedOrders = localStorage.getItem("bizTrackOrders");
     if (storedOrders) {
@@ -109,6 +133,10 @@ function newOrder(event) {
   const qtyBought = parseInt(document.getElementById("qty-bought").value);
   const shipping = parseFloat(document.getElementById("shipping").value);
   const taxes = parseFloat(document.getElementById("taxes").value);
+  
+  if (!validateOrderInput(itemPrice, qtyBought, shipping, taxes)) {
+  return;
+}
   const orderTotal = ((itemPrice * qtyBought) + shipping + taxes);
   const orderStatus = document.getElementById("order-status").value;
 
@@ -240,6 +268,10 @@ function updateOrder(orderID) {
         const qtyBought = parseInt(document.getElementById("qty-bought").value);
         const shipping = parseFloat(document.getElementById("shipping").value);
         const taxes = parseFloat(document.getElementById("taxes").value);
+        
+        if (!validateOrderInput(itemPrice, qtyBought, shipping, taxes)) {
+  return;
+}
         const updatedOrder = {
             orderID: document.getElementById("order-id").value,
             orderDate: document.getElementById("order-date").value,
