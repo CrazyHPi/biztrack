@@ -660,4 +660,70 @@ ol {
     }
 } */
 
+.cookie-banner {
+  position: fixed;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  padding: 16px;
+  border-radius: 10px;
+  z-index: 9999;
+}
+
+.cookie-banner-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cookie-banner p {
+  margin: 0;
+  color: #111827;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.cookie-banner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.cookie-banner button {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #111827;
+  background: #111827;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.cookie-banner button:hover {
+  background: #374151;
+}
+
+.cookie-policy-link {
+  color: #005fcc;
+  text-decoration: underline;
+}
+
+.privacy-page {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 24px;
+  line-height: 1.6;
+}
+
+.privacy-page h1 {
+  margin-bottom: 24px;
+}
+
+.privacy-page h2 {
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
 
