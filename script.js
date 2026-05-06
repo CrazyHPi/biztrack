@@ -385,3 +385,5 @@ function initializeChart() {
   );
   donutChart.render();
 };
+
+initializeChart();
