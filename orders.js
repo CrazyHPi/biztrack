@@ -1,4 +1,3 @@
-
 function openSidebar() {
     var side = document.getElementById('sidebar');
     side.style.display = (side.style.display === "block") ? "none" : "block";
@@ -87,13 +86,13 @@ window.onload = function () {
     }
 
     renderOrders(orders);
-}
+};
 
 function addOrUpdate(event) {
-    let type = document.getElementById("submitBtn").textContent;
-    if (type === 'Add') {
+    const mode = document.getElementById("submitBtn").dataset.mode;
+    if (mode === 'add') {
         newOrder(event);
-    } else if (type === 'Update'){
+    } else if (mode === 'update'){
         const orderID = document.getElementById("order-id").value;
         updateOrder(orderID);
     }
@@ -113,7 +112,7 @@ function newOrder(event) {
   const orderStatus = document.getElementById("order-status").value;
 
   if (isDuplicateID(orderID, null)) {
-    alert("Order ID already exists. Please use a unique ID.");
+    alert(t('alert.duplicateOrderID'));
     return;
   }
 
@@ -172,19 +171,19 @@ function renderOrders(orders) {
       orderRow.innerHTML = `
         <td>${order.orderID}</td>
         <td>${order.orderDate}</td>
-        <td>${order.itemName}</td>
+        <td>${t('data.' + order.itemName) || order.itemName}</td>
         <td>${formattedPrice}</td>
         <td>${order.qtyBought}</td>
         <td>${formattedShipping}</td>
         <td>${formattedTaxes}</td>
         <td class="order-total">${formattedTotal}</td>
         <td>
-            <div class="status ${statusMap[order.orderStatus]}"><span>${order.orderStatus}</span></div>
+            <div class="status ${statusMap[order.orderStatus]}"><span>${t('data.' + order.orderStatus) || order.orderStatus}</span></div>
         </td>
         <td class="action">
-            <i title="Edit" onclick="editRow('${order.orderID}')" class="edit-icon fa-solid fa-pen-to-square"></i>
+            <i title="${t('edit')}" onclick="editRow('${order.orderID}')" class="edit-icon fa-solid fa-pen-to-square"></i>
             <i onclick="deleteOrder('${order.orderID}')" class="delete-icon fas fa-trash-alt"></i>
-          </td> 
+          </td>
       `;
       orderTableBody.appendChild(orderRow);
   });
@@ -198,7 +197,7 @@ function displayRevenue() {
         .reduce((total, order) => total + order.orderTotal, 0);
 
     resultElement.innerHTML = `
-        <span>Total Revenue: $${totalRevenue.toFixed(2)}</span>
+        <span>${t('totalRevenue')}: $${totalRevenue.toFixed(2)}</span>
     `;
 }
 
@@ -215,7 +214,9 @@ function editRow(orderID) {
     document.getElementById("order-total").value = orderToEdit.orderTotal;
     document.getElementById("order-status").value = orderToEdit.orderStatus;
 
-    document.getElementById("submitBtn").textContent = "Update";
+    const submitBtn = document.getElementById("submitBtn");
+    submitBtn.textContent = t('update');
+    submitBtn.dataset.mode = 'update';
 
     document.getElementById("order-form").style.display = "block";
 }
@@ -253,7 +254,7 @@ function updateOrder(orderID) {
         };
 
         if (isDuplicateID(updatedOrder.orderID, orderID)) {
-            alert("Order ID already exists. Please use a unique ID.");
+            alert(t('alert.duplicateOrderID'));
             return;
         }
 
@@ -264,7 +265,9 @@ function updateOrder(orderID) {
         renderOrders(orders);
 
         document.getElementById("order-form").reset();
-        document.getElementById("submitBtn").textContent = "Add";
+        const submitBtn = document.getElementById("submitBtn");
+        submitBtn.textContent = t('add');
+        submitBtn.dataset.mode = 'add';
     }
 }
 
@@ -283,7 +286,6 @@ function sortTable(column) {
         const bValue = isNumeric ? parseFloat(b.dataset[column]) : b.dataset[column];
 
         if (typeof aValue === "string" && typeof bValue === "string") {
-            // Case-insensitive string comparison for text columns
             return aValue.localeCompare(bValue, undefined, { sensitivity: "base" });
         } else {
             return aValue - bValue;
@@ -327,21 +329,21 @@ function exportToCSV() {
             orderStatus: order.orderStatus,
         };
     });
-  
+
     const csvContent = generateCSV(ordersToExport);
-  
+
     const blob = new Blob([csvContent], { type: 'text/csv' });
-  
+
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
     link.download = 'biztrack_order_table.csv';
-  
+
     document.body.appendChild(link);
     link.click();
-  
+
     document.body.removeChild(link);
 }
-  
+
 function generateCSV(data) {
     const headers = Object.keys(data[0]).join(',');
     const rows = data.map(order => Object.values(order).join(','));

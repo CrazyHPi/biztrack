@@ -1,4 +1,3 @@
-
 function openSidebar() {
   var side = document.getElementById('sidebar');
   side.style.display = (side.style.display === "block") ? "none" : "block";
@@ -21,7 +20,7 @@ function closeForm() {
 
 let products = [];
 
-function init() {
+window.onload = function () {
   const storedProducts = localStorage.getItem("bizTrackProducts");
   if (storedProducts) {
       products = JSON.parse(storedProducts);
@@ -73,13 +72,13 @@ function init() {
     }
 
     renderProducts(products);
-}
+};
 
 function addOrUpdate(event) {
-  let type = document.getElementById("submitBtn").textContent;
-  if (type === 'Add') {
+  const mode = document.getElementById("submitBtn").dataset.mode;
+  if (mode === 'add') {
       newProduct(event);
-  } else if (type === 'Update'){
+  } else if (mode === 'update'){
       const prodID = document.getElementById("product-id").value;
       updateProduct(prodID);
   }
@@ -95,7 +94,7 @@ function newProduct(event) {
   const prodSold = parseInt(document.getElementById("product-sold").value);
 
   if (isDuplicateID(prodID, null)) {
-    alert("Product ID already exists. Please use a unique ID.");
+    alert(t('alert.duplicateProductID'));
     return;
   }
 
@@ -136,13 +135,13 @@ function renderProducts(products) {
 
       prodRow.innerHTML = `
           <td>${product.prodID}</td>
-          <td>${product.prodName}</td>
-          <td>${product.prodDesc}</td>
-          <td>${product.prodCat}</td>
+          <td>${t('data.' + product.prodName) || product.prodName}</td>
+          <td>${t('data.' + product.prodDesc) || product.prodDesc}</td>
+          <td>${t('data.' + product.prodCat) || product.prodCat}</td>
           <td>$${product.prodPrice.toFixed(2)}</td>
           <td>${product.prodSold}</td>
           <td class="action">
-            <i title="Edit" onclick="editRow('${product.prodID}')" class="edit-icon fa-solid fa-pen-to-square"></i>
+            <i title="${t('edit')}" onclick="editRow('${product.prodID}')" class="edit-icon fa-solid fa-pen-to-square"></i>
             <i onclick="deleteProduct('${product.prodID}')" class="delete-icon fas fa-trash-alt"></i>
           </td>
       `;
@@ -160,7 +159,9 @@ function editRow(prodID) {
   document.getElementById("product-price").value = productToEdit.prodPrice;
   document.getElementById("product-sold").value = productToEdit.prodSold;
 
-  document.getElementById("submitBtn").textContent = "Update";
+  const submitBtn = document.getElementById("submitBtn");
+  submitBtn.textContent = t('update');
+  submitBtn.dataset.mode = 'update';
 
   document.getElementById("product-form").style.display = "block";
 }
@@ -191,7 +192,7 @@ function updateProduct(prodID) {
         };
 
         if (isDuplicateID(updatedProduct.prodID, prodID)) {
-            alert("Product ID already exists. Please use a unique ID.");
+            alert(t('alert.duplicateProductID'));
             return;
         }
 
@@ -202,7 +203,9 @@ function updateProduct(prodID) {
         renderProducts(products);
 
         document.getElementById("product-form").reset();
-        document.getElementById("submitBtn").textContent = "Add";
+        const submitBtn = document.getElementById("submitBtn");
+        submitBtn.textContent = t('add');
+        submitBtn.dataset.mode = 'add';
     }
 }
 
@@ -282,5 +285,3 @@ function generateCSV(data) {
 
   return `${headers}\n${rows.join('\n')}`;
 }
-
-init();

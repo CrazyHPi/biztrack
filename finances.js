@@ -1,4 +1,3 @@
-
 function openSidebar() {
     var side = document.getElementById('sidebar');
     side.style.display = (side.style.display === "block") ? "none" : "block";
@@ -66,20 +65,20 @@ window.onload = function () {
         ];
 
         serialNumberCounter = transactions.length + 1
-  
+
         localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
     }
-  
+
     renderTransactions(transactions);
 }
 
 function addOrUpdate(event) {
-    let type = document.getElementById("submitBtn").textContent;
-    if (type === 'Add') {
+    const mode = document.getElementById("submitBtn").dataset.mode;
+    if (mode === 'add') {
         newTransaction(event);
-    } else if (type === 'Update'){
+    } else if (mode === 'update'){
         const trId = document.getElementById("tr-id").value;
-        updateTransaction(+trId); // convert to number
+        updateTransaction(+trId);
     }
 }
 
@@ -93,7 +92,7 @@ function newTransaction(event) {
 
     serialNumberCounter = transactions.length + 1;
     let trID = serialNumberCounter;
-    
+
     const transaction = {
       trID,
       trDate,
@@ -101,15 +100,15 @@ function newTransaction(event) {
       trAmount,
       trNotes,
     };
-    
+
     transactions.push(transaction);
-  
+
     renderTransactions(transactions);
     localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
 
     serialNumberCounter++;
     displayExpenses();
-  
+
     document.getElementById("transaction-form").reset();
 }
 
@@ -135,13 +134,13 @@ function renderTransactions(transactions) {
         transactionRow.innerHTML = `
             <td>${transaction.trID}</td>
             <td>${transaction.trDate}</td>
-            <td>${transaction.trCategory}</td>
+            <td>${t('data.' + transaction.trCategory) || transaction.trCategory}</td>
             <td class="tr-amount">${formattedAmount}</td>
-            <td>${transaction.trNotes}</td>
+            <td>${t('data.' + transaction.trNotes) || transaction.trNotes}</td>
             <td class="action">
-                <i title="Edit" onclick="editRow('${transaction.trID}')" class="edit-icon fa-solid fa-pen-to-square"></i>
+                <i title="${t('edit')}" onclick="editRow('${transaction.trID}')" class="edit-icon fa-solid fa-pen-to-square"></i>
                 <i onclick="deleteTransaction('${transaction.trID}')" class="delete-icon fas fa-trash-alt"></i>
-            </td> 
+            </td>
         `;
         transactionTableBody.appendChild(transactionRow);
   });
@@ -155,24 +154,26 @@ function displayExpenses() {
         .reduce((total, transaction) => total + transaction.trAmount,0);
 
     resultElement.innerHTML = `
-        <span>Total Expenses: $${totalExpenses.toFixed(2)}</span>
+        <span>${t('totalExpenses')}: $${totalExpenses.toFixed(2)}</span>
     `;
 }
 
 function editRow(trID) {
     const trToEdit = transactions.find(transaction => transaction.trID == trID);
-    
-    document.getElementById("tr-id").value = trToEdit.trID;      
+
+    document.getElementById("tr-id").value = trToEdit.trID;
     document.getElementById("tr-date").value = trToEdit.trDate;
     document.getElementById("tr-category").value = trToEdit.trCategory;
     document.getElementById("tr-amount").value = trToEdit.trAmount;
     document.getElementById("tr-notes").value = trToEdit.trNotes;
-  
-    document.getElementById("submitBtn").textContent = "Update";
+
+    const submitBtn = document.getElementById("submitBtn");
+    submitBtn.textContent = t('update');
+    submitBtn.dataset.mode = 'update';
 
     document.getElementById("transaction-form").style.display = "block";
   }
-  
+
 function deleteTransaction(trID) {
     const indexToDelete = transactions.findIndex(transaction => transaction.trID == trID);
 
@@ -204,7 +205,9 @@ function deleteTransaction(trID) {
         renderTransactions(transactions);
 
         document.getElementById("transaction-form").reset();
-        document.getElementById("submitBtn").textContent = "Add";
+        const submitBtn = document.getElementById("submitBtn");
+        submitBtn.textContent = t('add');
+        submitBtn.dataset.mode = 'add';
     }
 }
 
@@ -219,7 +222,6 @@ function sortTable(column) {
         const bValue = isNumeric ? parseFloat(b.dataset[column]) : b.dataset[column];
 
         if (typeof aValue === "string" && typeof bValue === "string") {
-            // Case-insensitive string comparison for text columns
             return aValue.localeCompare(bValue, undefined, { sensitivity: "base" });
         } else {
             return aValue - bValue;
@@ -259,21 +261,21 @@ function exportToCSV() {
             trNotes: transaction.trNotes,
         };
     });
-  
+
     const csvContent = generateCSV(transactionsToExport);
-  
+
     const blob = new Blob([csvContent], { type: 'text/csv' });
-  
+
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
     link.download = 'biztrack_expense_table.csv';
-  
+
     document.body.appendChild(link);
     link.click();
-  
+
     document.body.removeChild(link);
 }
-  
+
 function generateCSV(data) {
     const headers = Object.keys(data[0]).join(',');
     const rows = data.map(order => Object.values(order).join(','));
