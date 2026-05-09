@@ -195,6 +195,9 @@ function deleteProduct(prodID) {
 }
 
 function updateProduct(prodID) {
+  const indexToUpdate = products.findIndex(product => product.prodID === prodID);
+
+  if (indexToUpdate !== -1) {
     const prodPrice = Number(document.getElementById("product-price").value);
     const prodSold = Number(document.getElementById("product-sold").value);
 
@@ -211,21 +214,20 @@ function updateProduct(prodID) {
       prodSold: prodSold,
     };
 
-
-        if (isDuplicateID(updatedProduct.prodID, prodID)) {
-            alert("Product ID already exists. Please use a unique ID.");
-            return;
-        }
-
-        products[indexToUpdate] = updatedProduct;
-
-        localStorage.setItem("bizTrackProducts", JSON.stringify(products));
-
-        renderProducts(products);
-
-        document.getElementById("product-form").reset();
-        document.getElementById("submitBtn").textContent = "Add";
+    if (isDuplicateID(updatedProduct.prodID, prodID)) {
+      alert("Product ID already exists. Please use a unique ID.");
+      return;
     }
+
+    products[indexToUpdate] = updatedProduct;
+
+    localStorage.setItem("bizTrackProducts", JSON.stringify(products));
+
+    renderProducts(products);
+
+    document.getElementById("product-form").reset();
+    document.getElementById("submitBtn").textContent = "Add";
+  }
 }
 
 function isDuplicateID(prodID, currentID) {
