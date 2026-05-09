@@ -28,79 +28,103 @@ function closeForm() {
 
 let orders = [];
 
-function initOrders() {
-  const storedOrders = localStorage.getItem("bizTrackOrders");
-
-  if (storedOrders) {
-    try {
-      orders = JSON.parse(storedOrders) || [];
-    } catch (error) {
-      console.error("Unable to parse stored orders:", error);
-      orders = [];
-    }
-  } else {
-    orders = [
-      {
-        orderID: "1001",
-        orderDate: "2024-01-05",
-        itemName: "Baseball caps",
-        itemPrice: 25.00,
-        qtyBought: 2,
-        shipping: 2.50,
-        taxes: 9.00,
-        orderTotal: 61.50,
-        orderStatus: "Pending",
-      },
-      {
-        orderID: "1002",
-        orderDate: "2024-03-05",
-        itemName: "Water bottles",
-        itemPrice: 17.00,
-        qtyBought: 3,
-        shipping: 3.50,
-        taxes: 6.00,
-        orderTotal: 60.50,
-        orderStatus: "Processing",
-      },
-      {
-        orderID: "1003",
-        orderDate: "2024-02-05",
-        itemName: "Tote bags",
-        itemPrice: 20.00,
-        qtyBought: 4,
-        shipping: 2.50,
-        taxes: 2.00,
-        orderTotal: 84.50,
-        orderStatus: "Shipped",
-      },
-      {
-        orderID: "1004",
-        orderDate: "2023-01-05",
-        itemName: "Canvas prints",
-        itemPrice: 55.00,
-        qtyBought: 1,
-        shipping: 2.50,
-        taxes: 19.00,
-        orderTotal: 76.50,
-        orderStatus: "Delivered",
-      },
-      {
-        orderID: "1005",
-        orderDate: "2024-01-15",
-        itemName: "Beanies",
-        itemPrice: 15.00,
-        qtyBought: 2,
-        shipping: 3.90,
-        taxes: 4.00,
-        orderTotal: 37.90,
-        orderStatus: "Pending",
-      },
-    ];
-
-    localStorage.setItem("bizTrackOrders", JSON.stringify(orders));
+function validateOrderInput(itemPrice, qtyBought, shipping, taxes) {
+  if (!Number.isFinite(itemPrice) || itemPrice < 0) {
+    alert("Item price must be a valid non-negative number.");
+    return false;
   }
 
-  renderOrders(orders);
+  if (!Number.isInteger(qtyBought) || qtyBought < 1) {
+    alert("Quantity bought must be a whole number greater than 0.");
+    return false;
+  }
+
+  if (!Number.isFinite(shipping) || shipping < 0) {
+    alert("Shipping fee must be a valid non-negative number.");
+    return false;
+  }
+
+  if (!Number.isFinite(taxes) || taxes < 0) {
+    alert("Taxes must be a valid non-negative number.");
+    return false;
+  }
+
+  return true;
+}
+
+function initOrders() {
+    const storedOrders = localStorage.getItem("bizTrackOrders");
+
+    if (storedOrders) {
+        try {
+            orders = JSON.parse(storedOrders) || [];
+        } catch (error) {
+            console.error("Unable to parse stored orders:", error);
+            orders = [];
+        }
+    } else {
+        orders = [
+            {
+                orderID: "1001",
+                orderDate: "2024-01-05",
+                itemName: "Baseball caps",
+                itemPrice: 25.00,
+                qtyBought: 2,
+                shipping: 2.50,
+                taxes: 9.00,
+                orderTotal: 61.50,
+                orderStatus: "Pending",
+            },
+            {
+                orderID: "1002",
+                orderDate: "2024-03-05",
+                itemName: "Water bottles",
+                itemPrice: 17.00,
+                qtyBought: 3,
+                shipping: 3.50,
+                taxes: 6.00,
+                orderTotal: 60.50,
+                orderStatus: "Processing",
+            },
+            {
+                orderID: "1003",
+                orderDate: "2024-02-05",
+                itemName: "Tote bags",
+                itemPrice: 20.00,
+                qtyBought: 4,
+                shipping: 2.50,
+                taxes: 2.00,
+                orderTotal: 84.50,
+                orderStatus: "Shipped",
+            },
+            {
+                orderID: "1004",
+                orderDate: "2023-01-05",
+                itemName: "Canvas prints",
+                itemPrice: 55.00,
+                qtyBought: 1,
+                shipping: 2.50,
+                taxes: 19.00,
+                orderTotal: 76.50,
+                orderStatus: "Delivered",
+            },
+            {
+                orderID: "1005",
+                orderDate: "2024-01-15",
+                itemName: "Beanies",
+                itemPrice: 15.00,
+                qtyBought: 2,
+                shipping: 3.90,
+                taxes: 4.00,
+                orderTotal: 37.90,
+                orderStatus: "Pending",
+            },
+        ];
+
+        localStorage.setItem("bizTrackOrders", JSON.stringify(orders));
+    }
+
+    renderOrders(orders);
 }
 
 function addOrUpdate(event) {
@@ -125,6 +149,10 @@ function newOrder(event) {
   const qtyBought = parseInt(document.getElementById("qty-bought").value, 10);
   const shipping = parseFloat(document.getElementById("shipping").value);
   const taxes = parseFloat(document.getElementById("taxes").value);
+
+  if (!validateOrderInput(itemPrice, qtyBought, shipping, taxes)) {
+  return;
+}
   const orderTotal = itemPrice * qtyBought + shipping + taxes;
   const orderStatus = document.getElementById("order-status").value;
 
@@ -270,23 +298,26 @@ function deleteOrder(orderID) {
 function updateOrder(orderID) {
   const indexToUpdate = orders.findIndex((order) => order.orderID === orderID);
 
-  if (indexToUpdate !== -1) {
-    const itemPrice = parseFloat(document.getElementById("item-price").value);
-    const qtyBought = parseInt(document.getElementById("qty-bought").value, 10);
-    const shipping = parseFloat(document.getElementById("shipping").value);
-    const taxes = parseFloat(document.getElementById("taxes").value);
+    if (indexToUpdate !== -1) {
+        const itemPrice = parseFloat(document.getElementById("item-price").value);
+        const qtyBought = parseInt(document.getElementById("qty-bought").value, 10);
+        const shipping = parseFloat(document.getElementById("shipping").value);
+        const taxes = parseFloat(document.getElementById("taxes").value);
 
-    const updatedOrder = {
-      orderID: document.getElementById("order-id").value.trim(),
-      orderDate: document.getElementById("order-date").value,
-      itemName: document.getElementById("item-name").value.trim(),
-      itemPrice,
-      qtyBought,
-      shipping,
-      taxes,
-      orderTotal: itemPrice * qtyBought + shipping + taxes,
-      orderStatus: document.getElementById("order-status").value,
-    };
+        if (!validateOrderInput(itemPrice, qtyBought, shipping, taxes)) {
+            return;
+        }
+        const updatedOrder = {
+            orderID: document.getElementById("order-id").value.trim(),
+            orderDate: document.getElementById("order-date").value,
+            itemName: document.getElementById("item-name").value.trim(),
+            itemPrice,
+            qtyBought,
+            shipping,
+            taxes,
+            orderTotal: itemPrice * qtyBought + shipping + taxes,
+            orderStatus: document.getElementById("order-status").value,
+        };
 
     if (isDuplicateID(updatedOrder.orderID, orderID)) {
       alert("Order ID already exists. Please use a unique ID.");

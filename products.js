@@ -1,3 +1,17 @@
+function validateProductInput(prodPrice, prodSold) {
+  if (!Number.isFinite(prodPrice) || prodPrice < 0) {
+    alert("Product price must be a valid non-negative number.");
+    return false;
+  }
+
+  if (!Number.isInteger(prodSold) || prodSold < 0) {
+    alert("Units sold must be a whole number of 0 or more.");
+    return false;
+  }
+
+  return true;
+}
+
 function openSidebar() {
   const side = document.getElementById("sidebar");
   if (side) {
@@ -107,8 +121,12 @@ function newProduct(event) {
   const prodName = document.getElementById("product-name").value.trim();
   const prodDesc = document.getElementById("product-desc").value.trim();
   const prodCat = document.getElementById("product-cat").value.trim();
-  const prodPrice = parseFloat(document.getElementById("product-price").value);
-  const prodSold = parseInt(document.getElementById("product-sold").value, 10);
+  const prodPrice = Number(document.getElementById("product-price").value);
+  const prodSold = Number(document.getElementById("product-sold").value, 10);
+
+  if (!validateProductInput(prodPrice, prodSold)) {
+    return;
+  }
 
   if (isDuplicateID(prodID, null)) {
     alert("Product ID already exists. Please use a unique ID.");
@@ -206,15 +224,22 @@ function deleteProduct(prodID) {
 function updateProduct(prodID) {
   const indexToUpdate = products.findIndex((product) => product.prodID === prodID);
 
-  if (indexToUpdate !== -1) {
-    const updatedProduct = {
-      prodID: document.getElementById("product-id").value.trim(),
-      prodName: document.getElementById("product-name").value.trim(),
-      prodDesc: document.getElementById("product-desc").value.trim(),
-      prodCat: document.getElementById("product-cat").value.trim(),
-      prodPrice: parseFloat(document.getElementById("product-price").value),
-      prodSold: parseInt(document.getElementById("product-sold").value, 10),
-    };
+    if (indexToUpdate !== -1) {
+        const prodPrice = parseFloat(document.getElementById("product-price").value);
+        const prodSold = parseInt(document.getElementById("product-sold").value, 10);
+
+        if (!validateProductInput(prodPrice, prodSold)) {
+            return;
+        }
+
+        const updatedProduct = {
+            prodID: document.getElementById("product-id").value.trim(),
+            prodName: document.getElementById("product-name").value.trim(),
+            prodDesc: document.getElementById("product-desc").value.trim(),
+            prodCat: document.getElementById("product-cat").value.trim(),
+            prodPrice: prodPrice,
+            prodSold: prodSold,
+        };
 
     if (isDuplicateID(updatedProduct.prodID, prodID)) {
       alert("Product ID already exists. Please use a unique ID.");
@@ -222,8 +247,11 @@ function updateProduct(prodID) {
     }
 
     products[indexToUpdate] = updatedProduct;
+
     localStorage.setItem("bizTrackProducts", JSON.stringify(products));
+
     renderProducts(products);
+
     document.getElementById("product-form").reset();
     document.getElementById("submitBtn").textContent = "Add";
   }
@@ -354,5 +382,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  init();
+init();
 });
