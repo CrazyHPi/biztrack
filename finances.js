@@ -25,8 +25,14 @@ let serialNumberCounter;
 window.onload = function () {
     const storedTransactions = localStorage.getItem("bizTrackTransactions");
     if (storedTransactions) {
-        transactions = JSON.parse(storedTransactions);
-    } else {
+        try {
+            transactions = JSON.parse(storedTransactions);
+        } catch (e) {
+            console.error("Failed to parse bizTrackTransactions, using default data", e);
+            transactions = [];
+        }
+    }
+    if (!transactions || transactions.length === 0) {
         transactions = [
             {
                 trID: 1,
@@ -67,9 +73,13 @@ window.onload = function () {
 
         serialNumberCounter = transactions.length + 1
   
-        localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
+        try {
+            localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
+        } catch (e) {
+            console.error("Failed to save default transactions to localStorage", e);
+        }
     }
-  
+
     renderTransactions(transactions);
 }
 
@@ -105,7 +115,11 @@ function newTransaction(event) {
     transactions.push(transaction);
   
     renderTransactions(transactions);
-    localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
+    try {
+        localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
+    } catch (e) {
+        console.error("Failed to save transactions to localStorage", e);
+    }
 
     serialNumberCounter++;
     displayExpenses();
@@ -179,7 +193,11 @@ function deleteTransaction(trID) {
     if (indexToDelete !== -1) {
         transactions.splice(indexToDelete, 1);
 
-        localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
+        try {
+            localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
+        } catch (e) {
+            console.error("Failed to update localStorage after delete", e);
+        }
 
         renderTransactions(transactions);
     }
@@ -199,7 +217,11 @@ function deleteTransaction(trID) {
 
         transactions[indexToUpdate] = updatedTransaction;
 
-        localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
+        try {
+            localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
+        } catch (e) {
+            console.error("Failed to save updated transaction", e);
+        }
 
         renderTransactions(transactions);
 

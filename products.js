@@ -24,8 +24,14 @@ let products = [];
 function init() {
   const storedProducts = localStorage.getItem("bizTrackProducts");
   if (storedProducts) {
-      products = JSON.parse(storedProducts);
-  } else {
+      try {
+          products = JSON.parse(storedProducts);
+      } catch (e) {
+          console.error("Failed to parse bizTrackProducts, using default data", e);
+          products = [];
+      }
+  }
+  if (!products || products.length === 0) {
       products = [
         {
           prodID: "PD001",
@@ -69,7 +75,11 @@ function init() {
         },
       ];
 
-      localStorage.setItem("bizTrackProducts", JSON.stringify(products));
+      try {
+          localStorage.setItem("bizTrackProducts", JSON.stringify(products));
+      } catch (e) {
+          console.error("Failed to save default products to localStorage", e);
+      }
     }
 
     renderProducts(products);
@@ -111,7 +121,11 @@ function newProduct(event) {
   products.push(product);
 
   renderProducts(products);
-  localStorage.setItem("bizTrackProducts", JSON.stringify(products));
+  try {
+      localStorage.setItem("bizTrackProducts", JSON.stringify(products));
+  } catch (e) {
+      console.error("Failed to save products to localStorage", e);
+  }
 
   document.getElementById("product-form").reset();
 }
@@ -171,7 +185,11 @@ function deleteProduct(prodID) {
   if (indexToDelete !== -1) {
       products.splice(indexToDelete, 1);
 
-      localStorage.setItem("bizTrackProducts", JSON.stringify(products));
+      try {
+          localStorage.setItem("bizTrackProducts", JSON.stringify(products));
+      } catch (e) {
+          console.error("Failed to update localStorage after deleting product", e);
+      }
 
       renderProducts(products);
   }
@@ -197,7 +215,11 @@ function updateProduct(prodID) {
 
         products[indexToUpdate] = updatedProduct;
 
-        localStorage.setItem("bizTrackProducts", JSON.stringify(products));
+        try {
+            localStorage.setItem("bizTrackProducts", JSON.stringify(products));
+        } catch (e) {
+            console.error("Failed to save updated products", e);
+        }
 
         renderProducts(products);
 

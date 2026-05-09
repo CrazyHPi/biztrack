@@ -23,8 +23,14 @@ let orders = [];
 window.onload = function () {
     const storedOrders = localStorage.getItem("bizTrackOrders");
     if (storedOrders) {
-        orders = JSON.parse(storedOrders);
-    } else {
+        try {
+            orders = JSON.parse(storedOrders);
+        } catch (e) {
+            console.error("Failed to parse bizTrackOrders, using default data", e);
+            orders = [];
+        }
+    }
+    if (!orders || orders.length === 0) {
         orders = [
         {
             orderID: "1001",
@@ -83,7 +89,11 @@ window.onload = function () {
         },
         ];
 
-        localStorage.setItem("bizTrackOrders", JSON.stringify(orders));
+        try {
+            localStorage.setItem("bizTrackOrders", JSON.stringify(orders));
+        } catch (e) {
+            console.error("Failed to save default orders to localStorage", e);
+        }
     }
 
     renderOrders(orders);
@@ -132,7 +142,11 @@ function newOrder(event) {
   orders.push(order);
 
   renderOrders(orders);
-  localStorage.setItem("bizTrackOrders", JSON.stringify(orders));
+  try {
+      localStorage.setItem("bizTrackOrders", JSON.stringify(orders));
+  } catch (e) {
+      console.error("Failed to save orders to localStorage", e);
+  }
 
   document.getElementById("order-form").reset();
 }
@@ -226,7 +240,11 @@ function deleteOrder(orderID) {
   if (indexToDelete !== -1) {
       orders.splice(indexToDelete, 1);
 
-      localStorage.setItem("bizTrackOrders", JSON.stringify(orders));
+      try {
+          localStorage.setItem("bizTrackOrders", JSON.stringify(orders));
+      } catch (e) {
+          console.error("Failed to update localStorage after deleting order", e);
+      }
 
       renderOrders(orders);
   }
@@ -259,7 +277,11 @@ function updateOrder(orderID) {
 
         orders[indexToUpdate] = updatedOrder;
 
-        localStorage.setItem("bizTrackOrders", JSON.stringify(orders));
+        try {
+            localStorage.setItem("bizTrackOrders", JSON.stringify(orders));
+        } catch (e) {
+            console.error("Failed to save updated orders", e);
+        }
 
         renderOrders(orders);
 
