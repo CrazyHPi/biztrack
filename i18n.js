@@ -51,21 +51,26 @@ function translatePage() {
   });
 }
 
+function reRenderDynamicContent() {
+  if (typeof renderProducts === 'function' && typeof products !== 'undefined') renderProducts(products);
+  if (typeof renderOrders === 'function' && typeof orders !== 'undefined') renderOrders(orders);
+  if (typeof renderTransactions === 'function' && typeof transactions !== 'undefined') renderTransactions(transactions);
+  if (typeof renderSummaryCards === 'function') renderSummaryCards();
+  if (typeof initializeChart === 'function') initializeChart();
+  if (typeof displayRevenue === 'function') displayRevenue();
+  if (typeof displayExpenses === 'function') displayExpenses();
+}
+
 function switchLanguage() {
   const newLang = currentLang === 'en' ? 'zh' : 'en';
   loadLanguage(newLang).then(() => {
     translatePage();
-    if (typeof renderProducts === 'function' && typeof products !== 'undefined') renderProducts(products);
-    if (typeof renderOrders === 'function' && typeof orders !== 'undefined') renderOrders(orders);
-    if (typeof renderTransactions === 'function' && typeof transactions !== 'undefined') renderTransactions(transactions);
-    if (typeof renderSummaryCards === 'function') renderSummaryCards();
-    if (typeof initializeChart === 'function') initializeChart();
-    if (typeof displayRevenue === 'function') displayRevenue();
-    if (typeof displayExpenses === 'function') displayExpenses();
+    reRenderDynamicContent();
   });
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
+window.addEventListener('load', async () => {
   await loadLanguage(currentLang);
   translatePage();
+  reRenderDynamicContent();
 });
