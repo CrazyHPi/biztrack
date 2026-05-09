@@ -53,12 +53,6 @@
                     <span data-i18n="sidebar.help">Help</span>
                 </a>
             </li>
-            <li>
-                <a href="#" onclick="switchLanguage(); return false;">
-                    <i class="fa-solid fa-language"></i>
-                    <span data-i18n="language">中文</span>
-                </a>
-            </li>
             <li class="logout">
                 <a href="./about.html">
                     <i class="fa-solid fa-users-line"></i>
@@ -77,6 +71,17 @@
                 <h2 data-i18n="header.dashboard">Dashboard</h2>
             </div>
             <div class="user-info">
+                <div class="language-switcher">
+                    <a href="#" onclick="toggleLanguageDropdown(event); return false;">
+                        <i class="fa-solid fa-language"></i>
+                        <span data-i18n="language">English</span>
+                        <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                    </a>
+                    <ul class="language-dropdown">
+                        <li><a href="#" onclick="selectLanguage('en'); return false;">English</a></li>
+                        <li><a href="#" onclick="selectLanguage('zh'); return false;">中文</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
 

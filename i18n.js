@@ -1,6 +1,58 @@
 let translations = {};
 let currentLang = localStorage.getItem('bizTrackLang') || 'en';
 
+(function injectLanguageStyles() {
+  if (document.getElementById('language-dropdown-styles')) return;
+  const style = document.createElement('style');
+  style.id = 'language-dropdown-styles';
+  style.textContent = `
+    .language-switcher { position: relative; }
+    .language-switcher > a {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--black-color);
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .language-dropdown {
+      display: none;
+      list-style: none;
+      padding: 0;
+      margin: 4px 0 0;
+      background: #fff;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      min-width: 120px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      border-radius: 4px;
+      z-index: 100;
+      overflow: hidden;
+    }
+    .language-dropdown li a {
+      display: block;
+      padding: 8px 16px;
+      color: #333;
+      text-decoration: none;
+      white-space: nowrap;
+      font-size: 14px;
+    }
+    .language-dropdown li a:hover {
+      background: #f5f5f5;
+    }
+    .language-switcher .dropdown-arrow {
+      font-size: 0.7em;
+      transition: transform 0.2s;
+    }
+    .language-switcher.open .dropdown-arrow {
+      transform: rotate(180deg);
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
 async function loadLanguage(lang) {
   try {
     const res = await fetch(`locales/${lang}.json`);
@@ -14,12 +66,10 @@ async function loadLanguage(lang) {
 }
 
 function t(key) {
-  // First try exact key match for flat keys like "header.dashboard"
   if (translations[key] !== undefined) {
     return translations[key];
   }
 
-  // Then try nested lookup for keys like "data.Rent"
   const parts = key.split('.');
   let val = translations;
   for (const part of parts) {
@@ -61,12 +111,47 @@ function reRenderDynamicContent() {
   if (typeof displayExpenses === 'function') displayExpenses();
 }
 
-function switchLanguage() {
-  const newLang = currentLang === 'en' ? 'zh' : 'en';
-  loadLanguage(newLang).then(() => {
+function selectLanguage(lang) {
+  loadLanguage(lang).then(() => {
     translatePage();
     reRenderDynamicContent();
+    closeAllLanguageDropdowns();
   });
+}
+
+function toggleLanguageDropdown(event) {
+  event.preventDefault();
+  event.stopPropagation();
+  const switcher = event.currentTarget.closest('.language-switcher');
+  const dropdown = switcher.querySelector('.language-dropdown');
+  const isOpen = dropdown.style.display === 'block';
+
+  closeAllLanguageDropdowns();
+
+  if (!isOpen) {
+    dropdown.style.display = 'block';
+    switcher.classList.add('open');
+  }
+}
+
+function closeAllLanguageDropdowns() {
+  document.querySelectorAll('.language-dropdown').forEach(d => {
+    d.style.display = 'none';
+  });
+  document.querySelectorAll('.language-switcher').forEach(s => {
+    s.classList.remove('open');
+  });
+}
+
+document.addEventListener('click', function(event) {
+  if (!event.target.closest('.language-switcher')) {
+    closeAllLanguageDropdowns();
+  }
+});
+
+function switchLanguage() {
+  const newLang = currentLang === 'en' ? 'zh' : 'en';
+  selectLanguage(newLang);
 }
 
 window.addEventListener('load', async () => {
