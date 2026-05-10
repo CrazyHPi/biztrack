@@ -11,100 +11,125 @@ function closeSidebar() {
 
 
 window.onload = function () {
-  const expenses = JSON.parse(localStorage.getItem('bizTrackTransactions')) || [
-    {
-      trID: 1,
-      trDate: "2024-01-05",
-      trCategory: "Rent",
-      trAmount: 100.00,
-      trNotes: "January Rent"
-  },
-  {
-      trID: 2,
-      trDate: "2024-01-15",
-      trCategory: "Order Fulfillment",
-      trAmount: 35.00,
-      trNotes: "Order #1005"
-  },
-  {
-      trID: 3,
-      trDate: "2024-01-08",
-      trCategory: "Utilities",
-      trAmount: 120.00,
-      trNotes: "Internet"
-  },
-  {
-      trID: 4,
-      trDate: "2024-02-05",
-      trCategory: "Supplies",
-      trAmount: 180.00,
-      trNotes: "Embroidery Machine"
-  },
-  {
-      trID: 5,
-      trDate: "2024-01-25",
-      trCategory: "Miscellaneous",
-      trAmount: 20.00,
-      trNotes: "Pizza"
-  },
-  ];
-  const revenues = JSON.parse(localStorage.getItem('bizTrackOrders')) || [
-    {
-      orderID: "1001",
-      orderDate: "2024-01-05",
-      itemName: "Baseball caps",
-      itemPrice: 25.00,
-      qtyBought: 2,
-      shipping: 2.50,
-      taxes: 9.00,
-      orderTotal: 61.50,
-      orderStatus: "Pending"
-  },
-  {
-      orderID: "1002",
-      orderDate: "2024-03-05",
-      itemName: "Water bottles",
-      itemPrice: 17.00,
-      qtyBought: 3,
-      shipping: 3.50,
-      taxes: 6.00,
-      orderTotal: 60.50,
-      orderStatus: "Processing"
-  },
-  {
-      orderID: "1003",
-      orderDate: "2024-02-05",
-      itemName: "Tote bags",
-      itemPrice: 20.00,
-      qtyBought: 4,
-      shipping: 2.50,
-      taxes: 2.00,
-      orderTotal: 84.50,
-      orderStatus: "Shipped"
-  },
-  {
-      orderID: "1004",
-      orderDate: "2023-01-05",
-      itemName: "Canvas prints",
-      itemPrice: 55.00,
-      qtyBought: 1,
-      shipping: 2.50,
-      taxes: 19.00,
-      orderTotal: 76.50,
-      orderStatus: "Delivered"
-  },
-  {
-      orderID: "1005",
-      orderDate: "2024-01-15",
-      itemName: "Beanies",
-      itemPrice: 15.00,
-      qtyBought: 2,
-      shipping: 3.90,
-      taxes: 4.00,
-      orderTotal: 37.90,
-      orderStatus: "Pending"
-  },
-  ];
+  let expenses = [];
+  const storedExpenses = localStorage.getItem('bizTrackTransactions');
+  if (storedExpenses) {
+      try {
+          expenses = JSON.parse(storedExpenses);
+      } catch (e) {
+          console.error("Failed to parse expenses in dashboard", e);
+          expenses = [];
+      }
+  }
+  if (!expenses || expenses.length === 0) {
+      expenses = [
+        {
+          trID: 1,
+          trDate: "2024-01-05",
+          trCategory: "Rent",
+          trAmount: 100.00,
+          trNotes: "January Rent"
+      },
+      {
+          trID: 2,
+          trDate: "2024-01-15",
+          trCategory: "Order Fulfillment",
+          trAmount: 35.00,
+          trNotes: "Order #1005"
+      },
+      {
+          trID: 3,
+          trDate: "2024-01-08",
+          trCategory: "Utilities",
+          trAmount: 120.00,
+          trNotes: "Internet"
+      },
+      {
+          trID: 4,
+          trDate: "2024-02-05",
+          trCategory: "Supplies",
+          trAmount: 180.00,
+          trNotes: "Embroidery Machine"
+      },
+      {
+          trID: 5,
+          trDate: "2024-01-25",
+          trCategory: "Miscellaneous",
+          trAmount: 20.00,
+          trNotes: "Pizza"
+      },
+      ];
+  }
+
+  let revenues = [];
+  const storedRevenues = localStorage.getItem('bizTrackOrders');
+  if (storedRevenues) {
+      try {
+          revenues = JSON.parse(storedRevenues);
+      } catch (e) {
+          console.error("Failed to parse revenues in dashboard", e);
+          revenues = [];
+      }
+  }
+  if (!revenues || revenues.length === 0) {
+      revenues = [
+        {
+          orderID: "1001",
+          orderDate: "2024-01-05",
+          itemName: "Baseball caps",
+          itemPrice: 25.00,
+          qtyBought: 2,
+          shipping: 2.50,
+          taxes: 9.00,
+          orderTotal: 61.50,
+          orderStatus: "Pending"
+      },
+      {
+          orderID: "1002",
+          orderDate: "2024-03-05",
+          itemName: "Water bottles",
+          itemPrice: 17.00,
+          qtyBought: 3,
+          shipping: 3.50,
+          taxes: 6.00,
+          orderTotal: 60.50,
+          orderStatus: "Processing"
+      },
+      {
+          orderID: "1003",
+          orderDate: "2024-02-05",
+          itemName: "Tote bags",
+          itemPrice: 20.00,
+          qtyBought: 4,
+          shipping: 2.50,
+          taxes: 2.00,
+          orderTotal: 84.50,
+          orderStatus: "Shipped"
+      },
+      {
+          orderID: "1004",
+          orderDate: "2023-01-05",
+          itemName: "Canvas prints",
+          itemPrice: 55.00,
+          qtyBought: 1,
+          shipping: 2.50,
+          taxes: 19.00,
+          orderTotal: 76.50,
+          orderStatus: "Delivered"
+      },
+      {
+          orderID: "1005",
+          orderDate: "2024-01-15",
+          itemName: "Beanies",
+          itemPrice: 15.00,
+          qtyBought: 2,
+          shipping: 3.90,
+          taxes: 4.00,
+          orderTotal: 37.90,
+          orderStatus: "Pending"
+      },
+      ];
+  }
 
   const totalExpenses = calculateExpTotal(expenses);
   const totalRevenues = calculateRevTotal(revenues);
@@ -167,48 +192,60 @@ function calculateCategorySales(products) {
 
 
 function initializeChart() {
-  const items = JSON.parse(localStorage.getItem('bizTrackProducts')) || [
-    {
-      prodID: "PD001",
-      prodName: "Baseball caps",
-      prodDesc: "Peace embroidered cap",
-      prodCat: "Hats",
-      prodPrice: 25.00,
-      prodSold: 20
-    },
-    {
-      prodID: "PD002",
-      prodName: "Water bottles",
-      prodDesc: "Floral lotus printed bottle",
-      prodCat: "Drinkware",
-      prodPrice: 48.50,
-      prodSold: 10
-    },
-    {
-      prodID: "PD003",
-      prodName: "Sweatshirt",
-      prodDesc: "Palestine sweater",
-      prodCat: "Clothing",
-      prodPrice: 17.50,
-      prodSold: 70
-    },
-    {
-      prodID: "PD004",
-      prodName: "Posters",
-      prodDesc: "Vibes printed poster",
-      prodCat: "Home decor",
-      prodPrice: 12.00,
-      prodSold: 60
-    },
-    {
-      prodID: "PD005",
-      prodName: "Pillow cases",
-      prodDesc: "Morrocan print pillow case",
-      prodCat: "Accessories",
-      prodPrice: 17.00,
-      prodSold: 40
-    },
-  ];
+  let items = [];
+  const storedProducts = localStorage.getItem('bizTrackProducts');
+  if (storedProducts) {
+      try {
+          items = JSON.parse(storedProducts);
+      } catch (e) {
+          console.error("Failed to parse products for chart", e);
+          items = [];
+      }
+  }
+  if (!items || items.length === 0) {
+      items = [
+        {
+          prodID: "PD001",
+          prodName: "Baseball caps",
+          prodDesc: "Peace embroidered cap",
+          prodCat: "Hats",
+          prodPrice: 25.00,
+          prodSold: 20
+        },
+        {
+          prodID: "PD002",
+          prodName: "Water bottles",
+          prodDesc: "Floral lotus printed bottle",
+          prodCat: "Drinkware",
+          prodPrice: 48.50,
+          prodSold: 10
+        },
+        {
+          prodID: "PD003",
+          prodName: "Sweatshirt",
+          prodDesc: "Palestine sweater",
+          prodCat: "Clothing",
+          prodPrice: 17.50,
+          prodSold: 70
+        },
+        {
+          prodID: "PD004",
+          prodName: "Posters",
+          prodDesc: "Vibes printed poster",
+          prodCat: "Home decor",
+          prodPrice: 12.00,
+          prodSold: 60
+        },
+        {
+          prodID: "PD005",
+          prodName: "Pillow cases",
+          prodDesc: "Morrocan print pillow case",
+          prodCat: "Accessories",
+          prodPrice: 17.00,
+          prodSold: 40
+        },
+      ];
+  }
   const categorySalesData = calculateCategorySales(items);
 
   const sortedCategorySales = Object.entries(categorySalesData)
@@ -293,43 +330,55 @@ function initializeChart() {
     return categoryExpenses;
   }
 
-  const expItems = JSON.parse(localStorage.getItem('bizTrackTransactions')) || [
-    {
-      trID: 1,
-      trDate: "2024-01-05",
-      trCategory: "Rent",
-      trAmount: 100.00,
-      trNotes: "January Rent"
-  },
-  {
-      trID: 2,
-      trDate: "2024-01-15",
-      trCategory: "Order Fulfillment",
-      trAmount: 35.00,
-      trNotes: "Order #1005"
-  },
-  {
-      trID: 3,
-      trDate: "2024-01-08",
-      trCategory: "Utilities",
-      trAmount: 120.00,
-      trNotes: "Internet"
-  },
-  {
-      trID: 4,
-      trDate: "2024-02-05",
-      trCategory: "Supplies",
-      trAmount: 180.00,
-      trNotes: "Embroidery Machine"
-  },
-  {
-      trID: 5,
-      trDate: "2024-01-25",
-      trCategory: "Miscellaneous",
-      trAmount: 20.00,
-      trNotes: "Pizza"
-  },
-  ];
+  let expItems = [];
+  const storedExpensesForChart = localStorage.getItem('bizTrackTransactions');
+  if (storedExpensesForChart) {
+      try {
+          expItems = JSON.parse(storedExpensesForChart);
+      } catch (e) {
+          console.error("Failed to parse expenses for donut chart", e);
+          expItems = [];
+      }
+  }
+  if (!expItems || expItems.length === 0) {
+      expItems = [
+        {
+          trID: 1,
+          trDate: "2024-01-05",
+          trCategory: "Rent",
+          trAmount: 100.00,
+          trNotes: "January Rent"
+      },
+      {
+          trID: 2,
+          trDate: "2024-01-15",
+          trCategory: "Order Fulfillment",
+          trAmount: 35.00,
+          trNotes: "Order #1005"
+      },
+      {
+          trID: 3,
+          trDate: "2024-01-08",
+          trCategory: "Utilities",
+          trAmount: 120.00,
+          trNotes: "Internet"
+      },
+      {
+          trID: 4,
+          trDate: "2024-02-05",
+          trCategory: "Supplies",
+          trAmount: 180.00,
+          trNotes: "Embroidery Machine"
+      },
+      {
+          trID: 5,
+          trDate: "2024-01-25",
+          trCategory: "Miscellaneous",
+          trAmount: 20.00,
+          trNotes: "Pizza"
+      },
+      ];
+  }
   const categoryExpData = calculateCategoryExp(expItems);
 
   const donutChartOptions = {

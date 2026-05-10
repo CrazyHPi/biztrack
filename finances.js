@@ -33,12 +33,12 @@ function initTransactions() {
   const storedTransactions = localStorage.getItem("bizTrackTransactions");
 
   if (storedTransactions) {
-    try {
-      transactions = JSON.parse(storedTransactions) || [];
-    } catch (error) {
-      console.error("Unable to parse stored transactions:", error);
-      transactions = [];
-    }
+      try {
+          transactions = JSON.parse(storedTransactions) || [];
+      } catch (error) {
+          console.error("Unable to parse stored transactions:", error);
+          transactions = [];
+      }
   } else {
     transactions = [
       {
@@ -78,8 +78,12 @@ function initTransactions() {
       },
     ];
 
-    localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
-  }
+        try {
+            localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
+        } catch (e) {
+            console.error("Failed to save default transactions to localStorage", e);
+        }
+    }
 
   serialNumberCounter = getNextTransactionId();
   renderTransactions(transactions);
@@ -119,6 +123,15 @@ function newTransaction(event) {
   localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
   serialNumberCounter = getNextTransactionId();
   renderTransactions(transactions);
+    try {
+        localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
+    } catch (e) {
+        console.error("Failed to save transactions to localStorage", e);
+    }
+
+    serialNumberCounter++;
+    displayExpenses();
+  
   document.getElementById("transaction-form").reset();
 }
 
@@ -207,10 +220,16 @@ function deleteTransaction(trID) {
   );
 
   if (indexToDelete !== -1) {
-    transactions.splice(indexToDelete, 1);
-    localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
-    serialNumberCounter = getNextTransactionId();
-    renderTransactions(transactions);
+      transactions.splice(indexToDelete, 1);
+
+      try {
+          localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
+      } catch (e) {
+          console.error("Failed to update localStorage after delete", e);
+      }
+
+      serialNumberCounter = getNextTransactionId();
+      renderTransactions(transactions);
   }
 }
 
@@ -219,21 +238,27 @@ function updateTransaction(trID) {
     (transaction) => Number(transaction.trID) === Number(trID)
   );
 
-  if (indexToUpdate !== -1) {
-    const updatedTransaction = {
-      trID,
-      trDate: document.getElementById("tr-date").value,
-      trCategory: document.getElementById("tr-category").value.trim(),
-      trAmount: parseFloat(document.getElementById("tr-amount").value),
-      trNotes: document.getElementById("tr-notes").value.trim(),
-    };
+    if (indexToUpdate !== -1) {
+        const updatedTransaction = {
+            trID,
+            trDate: document.getElementById("tr-date").value,
+            trCategory: document.getElementById("tr-category").value.trim(),
+            trAmount: parseFloat(document.getElementById("tr-amount").value),
+            trNotes: document.getElementById("tr-notes").value.trim(),
+        };
 
-    transactions[indexToUpdate] = updatedTransaction;
-    localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
-    renderTransactions(transactions);
-    document.getElementById("transaction-form").reset();
-    document.getElementById("submitBtn").textContent = "Add";
-  }
+        transactions[indexToUpdate] = updatedTransaction;
+
+        try {
+            localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
+        } catch (e) {
+            console.error("Failed to save updated transaction", e);
+        }
+
+        renderTransactions(transactions);
+        document.getElementById("transaction-form").reset();
+        document.getElementById("submitBtn").textContent = "Add";
+    }
 }
 
 function sortTable(column) {
