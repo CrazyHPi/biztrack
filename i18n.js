@@ -102,8 +102,7 @@ function switchLanguage() {
   selectLanguage(newLang);
 }
 
-window.addEventListener('load', async () => {
-  await loadLanguage(currentLang);
+loadLanguage(currentLang).then(() => {
   translatePage();
   reRenderDynamicContent();
 });
