@@ -1,10 +1,14 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const existingConsent = localStorage.getItem("cookieConsent");
-
-  if (existingConsent) {
-    return;
+function showCookieBanner() {
+  const existing = document.querySelector(".cookie-banner");
+  if (existing) {
+    existing.remove();
   }
+  localStorage.removeItem("cookieConsent");
+  localStorage.removeItem("cookieConsentDate");
+  createCookieBanner();
+}
 
+function createCookieBanner() {
   const banner = document.createElement("div");
   banner.className = "cookie-banner";
   banner.setAttribute("role", "dialog");
@@ -45,4 +49,12 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("acceptCookies").addEventListener("click", function () {
     saveConsent("accepted");
   });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const existingConsent = localStorage.getItem("cookieConsent");
+  if (existingConsent) {
+    return;
+  }
+  createCookieBanner();
 });
