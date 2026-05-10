@@ -125,7 +125,11 @@ function initOrders() {
             },
         ];
 
-        localStorage.setItem("bizTrackOrders", JSON.stringify(orders));
+        try {
+            localStorage.setItem("bizTrackOrders", JSON.stringify(orders));
+        } catch (e) {
+            console.error("Failed to save default orders to localStorage", e);
+        }
     }
 
     renderOrders(orders);
@@ -180,6 +184,12 @@ function newOrder(event) {
   orders.push(order);
   localStorage.setItem("bizTrackOrders", JSON.stringify(orders));
   renderOrders(orders);
+  try {
+      localStorage.setItem("bizTrackOrders", JSON.stringify(orders));
+  } catch (e) {
+      console.error("Failed to save orders to localStorage", e);
+  }
+
   document.getElementById("order-form").reset();
 }
 
@@ -292,11 +302,17 @@ function editRow(orderID) {
 function deleteOrder(orderID) {
   const indexToDelete = orders.findIndex((order) => order.orderID === orderID);
 
-  if (indexToDelete !== -1) {
-    orders.splice(indexToDelete, 1);
-    localStorage.setItem("bizTrackOrders", JSON.stringify(orders));
-    renderOrders(orders);
-  }
+    if (indexToDelete !== -1) {
+        orders.splice(indexToDelete, 1);
+
+        try {
+            localStorage.setItem("bizTrackOrders", JSON.stringify(orders));
+        } catch (e) {
+            console.error("Failed to update localStorage after deleting order", e);
+        }
+
+        renderOrders(orders);
+    }
 }
 
 function updateOrder(orderID) {
@@ -328,11 +344,17 @@ function updateOrder(orderID) {
       return;
     }
 
-    orders[indexToUpdate] = updatedOrder;
-    localStorage.setItem("bizTrackOrders", JSON.stringify(orders));
-    renderOrders(orders);
-    document.getElementById("order-form").reset();
-    document.getElementById("submitBtn").textContent = "Add";
+        orders[indexToUpdate] = updatedOrder;
+
+        try {
+            localStorage.setItem("bizTrackOrders", JSON.stringify(orders));
+        } catch (e) {
+            console.error("Failed to save updated orders", e);
+        }
+
+        renderOrders(orders);
+        document.getElementById("order-form").reset();
+        document.getElementById("submitBtn").textContent = "Add";
   }
 }
 
