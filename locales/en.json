@@ -129,6 +129,7 @@
   "privacy.s5Text": "Users can accept, reject, or allow only necessary storage through the cookie banner. The selected choice is stored locally in the browser.",
   "privacy.s6Title": "6. Contact",
   "privacy.s6Text": "For privacy-related questions, please contact the CPT304 coursework project team.",
+  "privacy.manageCookies": "Manage Cookie Preferences",
   "cookie.banner": "This website uses cookies to ensure you get the best experience.",
   "cookie.accept": "Accept",
   "data": {

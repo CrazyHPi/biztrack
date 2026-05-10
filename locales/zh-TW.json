@@ -129,6 +129,7 @@
   "privacy.s5Text": "使用者可以透過 Cookie 橫幅接受、拒絕或僅允許必要的儲存。所選選項儲存在瀏覽器本機。",
   "privacy.s6Title": "6. 聯絡方式",
   "privacy.s6Text": "如有隱私相關問題，請聯絡 CPT304 課程專案團隊。",
+  "privacy.manageCookies": "管理 Cookie 偏好設定",
   "cookie.banner": "本網站使用 Cookie 以確保最佳體驗。",
   "cookie.accept": "接受",
   "data": {

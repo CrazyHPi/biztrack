@@ -129,6 +129,7 @@
   "privacy.s5Text": "用户可以通过 Cookie 横幅接受、拒绝或仅允许必要的存储。所选选项存储在浏览器本地。",
   "privacy.s6Title": "6. 联系方式",
   "privacy.s6Text": "如有隐私相关问题，请联系 CPT304 课程项目团队。",
+  "privacy.manageCookies": "管理 Cookie 偏好设置",
   "cookie.banner": "本网站使用 Cookie 以确保最佳体验。",
   "cookie.accept": "接受",
   "data": {
