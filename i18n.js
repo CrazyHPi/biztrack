@@ -1,58 +1,6 @@
 let translations = {};
 let currentLang = localStorage.getItem('bizTrackLang') || 'en';
 
-(function injectLanguageStyles() {
-  if (document.getElementById('language-dropdown-styles')) return;
-  const style = document.createElement('style');
-  style.id = 'language-dropdown-styles';
-  style.textContent = `
-    .language-switcher { position: relative; }
-    .language-switcher > a {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--black-color);
-      text-decoration: none;
-      cursor: pointer;
-      font-size: 14px;
-    }
-    .language-dropdown {
-      display: none;
-      list-style: none;
-      padding: 0;
-      margin: 4px 0 0;
-      background: #fff;
-      position: absolute;
-      right: 0;
-      top: 100%;
-      min-width: 120px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-      border-radius: 4px;
-      z-index: 100;
-      overflow: hidden;
-    }
-    .language-dropdown li a {
-      display: block;
-      padding: 8px 16px;
-      color: #333;
-      text-decoration: none;
-      white-space: nowrap;
-      font-size: 14px;
-    }
-    .language-dropdown li a:hover {
-      background: #f5f5f5;
-    }
-    .language-switcher .dropdown-arrow {
-      font-size: 0.7em;
-      transition: transform 0.2s;
-    }
-    .language-switcher.open .dropdown-arrow {
-      transform: rotate(180deg);
-    }
-  `;
-  document.head.appendChild(style);
-})();
-
 async function loadLanguage(lang) {
   try {
     const res = await fetch(`locales/${lang}.json`);
@@ -154,8 +102,7 @@ function switchLanguage() {
   selectLanguage(newLang);
 }
 
-window.addEventListener('load', async () => {
-  await loadLanguage(currentLang);
+loadLanguage(currentLang).then(() => {
   translatePage();
   reRenderDynamicContent();
 });

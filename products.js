@@ -15,7 +15,11 @@ function validateProductInput(prodPrice, prodSold) {
 function openSidebar() {
   const side = document.getElementById("sidebar");
   if (side) {
-    side.style.display = side.style.display === "block" ? "none" : "block";
+    if (window.getComputedStyle(side).display === "none") {
+      side.style.display = "block";
+    } else {
+      side.style.display = "none";
+    }
   }
 }
 
