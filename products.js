@@ -104,7 +104,7 @@ function init() {
   }
 
   renderProducts(products);
-}
+};
 
 function addOrUpdate(event) {
   const submitBtn = document.getElementById("submitBtn");
@@ -133,7 +133,7 @@ function newProduct(event) {
   }
 
   if (isDuplicateID(prodID, null)) {
-    alert("Product ID already exists. Please use a unique ID.");
+    alert(t('alert.duplicateProductID'));
     return;
   }
 
@@ -218,7 +218,10 @@ function editRow(prodID) {
   document.getElementById("product-cat").value = productToEdit.prodCat;
   document.getElementById("product-price").value = productToEdit.prodPrice;
   document.getElementById("product-sold").value = productToEdit.prodSold;
-  document.getElementById("submitBtn").textContent = "Update";
+
+  const submitBtn = document.getElementById("submitBtn");
+  submitBtn.textContent = t('update');
+  submitBtn.dataset.mode = 'update';
   document.getElementById("product-form").style.display = "block";
 }
 
@@ -259,7 +262,7 @@ function updateProduct(prodID) {
         };
 
     if (isDuplicateID(updatedProduct.prodID, prodID)) {
-      alert("Product ID already exists. Please use a unique ID.");
+            alert(t('alert.duplicateProductID'));
       return;
     }
 
@@ -274,7 +277,9 @@ function updateProduct(prodID) {
     renderProducts(products);
 
     document.getElementById("product-form").reset();
-    document.getElementById("submitBtn").textContent = "Add";
+        const submitBtn = document.getElementById("submitBtn");
+        submitBtn.textContent = t('add');
+        submitBtn.dataset.mode = 'add';
   }
 }
 

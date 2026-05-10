@@ -129,7 +129,7 @@ function initOrders() {
     }
 
     renderOrders(orders);
-}
+};
 
 function addOrUpdate(event) {
   const submitBtn = document.getElementById("submitBtn");
@@ -161,7 +161,7 @@ function newOrder(event) {
   const orderStatus = document.getElementById("order-status").value;
 
   if (isDuplicateID(orderID, null)) {
-    alert("Order ID already exists. Please use a unique ID.");
+    alert(t('alert.duplicateOrderID'));
     return;
   }
 
@@ -267,7 +267,7 @@ function displayRevenue() {
   }
 
   const totalRevenue = orders.reduce((total, order) => total + Number(order.orderTotal || 0), 0);
-  resultElement.innerHTML = `<span>Total Revenue: $${totalRevenue.toFixed(2)}</span>`;
+  resultElement.innerHTML = `<span>${t('totalRevenue')}: $${totalRevenue.toFixed(2)}</span>`;
 }
 
 function editRow(orderID) {
@@ -291,7 +291,10 @@ function editRow(orderID) {
   }
 
   document.getElementById("order-status").value = orderToEdit.orderStatus;
-  document.getElementById("submitBtn").textContent = "Update";
+
+    const submitBtn = document.getElementById("submitBtn");
+    submitBtn.textContent = t('update');
+    submitBtn.dataset.mode = 'update';
   document.getElementById("order-form").style.display = "block";
 }
 
@@ -336,7 +339,7 @@ function updateOrder(orderID) {
         };
 
     if (isDuplicateID(updatedOrder.orderID, orderID)) {
-      alert("Order ID already exists. Please use a unique ID.");
+            alert(t('alert.duplicateOrderID'));
       return;
     }
 
@@ -350,7 +353,9 @@ function updateOrder(orderID) {
 
         renderOrders(orders);
         document.getElementById("order-form").reset();
-        document.getElementById("submitBtn").textContent = "Add";
+        const submitBtn = document.getElementById("submitBtn");
+        submitBtn.textContent = t('add');
+        submitBtn.dataset.mode = 'add';
   }
 }
 

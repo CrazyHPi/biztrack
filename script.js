@@ -9,8 +9,7 @@ function closeSidebar() {
   document.getElementById('sidebar').style.display = 'none';
 }
 
-
-window.onload = function () {
+function renderSummaryCards() {
   let expenses = [];
   const storedExpenses = localStorage.getItem('bizTrackTransactions');
   if (storedExpenses) {
@@ -142,24 +141,29 @@ window.onload = function () {
   const ordDiv = document.getElementById('num-orders');
 
   revDiv.innerHTML = `
-      <span class="title">Revenue</span>
-      <span class="amount-value">$${totalRevenues.toFixed(2)}</span> 
+      <span class="title">${t('revenue')}</span>
+      <span class="amount-value">$${totalRevenues.toFixed(2)}</span>
   `;
 
   expDiv.innerHTML = `
-    <span class="title">Expenses</span>
+    <span class="title">${t('expenses')}</span>
     <span class="amount-value">$${totalExpenses.toFixed(2)}</span>
   `;
 
   balDiv.innerHTML = `
-    <span class="title">Balance</span>
+    <span class="title">${t('balance')}</span>
     <span class="amount-value">$${totalBalance.toFixed(2)}</span>
   `;
 
   ordDiv.innerHTML = `
-    <span class="title">Orders</span>
+    <span class="title">${t('orders')}</span>
     <span class="amount-value">${numOrders}</span>
   `;
+}
+
+window.onload = function () {
+  renderSummaryCards();
+  initializeChart();
 };
 
 function calculateExpTotal(transactions) {
@@ -254,7 +258,7 @@ function initializeChart() {
 
   const barChartOptions = {
       series: [{
-          name: "Total Sales",
+          name: t('chart.totalSales'),
           data: Object.values(sortedCategorySales),
       }],
       chart: {
@@ -265,7 +269,6 @@ function initializeChart() {
       theme: {
         palette: 'palette9' // upto palette10
       },
-      // colors: ['#247BA0', '#A37A74', '#249672', '#e49273', '#9AADBF'],
       plotOptions: {
         bar: {
           distributed: true,
@@ -291,7 +294,7 @@ function initializeChart() {
       },
       yaxis: {
         title: {
-          text: 'Total Sales ($)',
+          text: t('chart.yAxis.sales'),
         },
         axisTicks: {
           show: false,
@@ -305,11 +308,14 @@ function initializeChart() {
         }
       }
     };
-    
-  const barChart = new ApexCharts(
+
+  if (window.barChart) {
+    window.barChart.destroy();
+  }
+  window.barChart = new ApexCharts(
     document.querySelector('#bar-chart'), barChartOptions
   );
-  barChart.render();
+  window.barChart.render();
 
 
   // DONUT CHART
@@ -385,7 +391,6 @@ function initializeChart() {
     series: Object.values(categoryExpData),
     labels: Object.keys(categoryExpData),
     chart: {
-      // height: 350,
       type: 'donut',
       width: '100%',
       toolbar: {
@@ -427,10 +432,13 @@ function initializeChart() {
       }
     },
   };
-  
-  const donutChart = new ApexCharts(
+
+  if (window.donutChart) {
+    window.donutChart.destroy();
+  }
+  window.donutChart = new ApexCharts(
     document.querySelector('#donut-chart'),
     donutChartOptions
   );
-  donutChart.render();
+  window.donutChart.render();
 };
