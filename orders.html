@@ -147,7 +147,7 @@
                             <input type="number" id="item-price" placeholder="$0.00" min="0.00" max="10000.00" step="0.01" required>
 
                             <label for="qty-bought"><b data-i18n="qtyBoughtLabel">Quantity Bought</b>:</label>
-                            <input type="number" id="qty-bought" placeholder="1" required>
+                            <input type="number" id="qty-bought" placeholder="1" min="1" step="1" required>
 
                             <label for="shipping"><b data-i18n="shippingLabel">Shipping fee</b>:</label>
                             <input type="number" id="shipping" placeholder="$2.00" min="0.00" max="10000.00" step="0.01" required>
@@ -209,5 +209,6 @@
     </div>
 
     <script src="./orders.js"></script>
+    <script src="cookie-banner.js"></script>
 </body>
 </html>
