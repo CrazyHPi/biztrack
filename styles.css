@@ -93,9 +93,9 @@ body {
     border-radius: 8px;
     transition: all 0.3s ease-in-out;
 }
-.menu li:hover, 
+.menu li:hover,
 .active {
-    background: var(--orange-color);
+    background: #c2694e;
 }
 .menu a {
     color: var(--white-color);
@@ -195,7 +195,7 @@ body {
     font-size: 20px;
 }
 .order-button button {
-    background: var(--blue-color);
+    background: #1a5a7a;
     color: var(--white-color);
 }
 .order-button button:hover {
@@ -204,10 +204,10 @@ body {
 .finance-button button {
     font-size: medium;
     font-weight: 600;
-    background: var(--brown-color);
+    background: #7a5a54;
     cursor: pointer;
     transition: all 0.5s;
-    color: var(--light-orange);
+    color: #ffffff;
     padding: 12px 13px;
     border-radius: 5px;
 }
@@ -218,7 +218,7 @@ body {
 .add-button, .download-button {
     font-size: medium;
     font-weight: 600;
-    background: var(--green-color);
+    background: #1a6b52;
     cursor: pointer;
     transition: all 0.5s;
     color: var(--white-color);
@@ -285,7 +285,7 @@ label {
     gap: 18px;
 }
 .form-container .btn {
-    background-color: var(--green-color);
+    background-color: #1a6b52;
     color: white;
     padding: 16px 20px;
     border: none;
@@ -296,7 +296,7 @@ label {
     font-size: 15px;
 }
 .form-container .cancel {
-    background-color: var(--orange-color);
+    background-color: #c2694e;
 }
 .form-container .btn:hover, .open-button:hover {
     opacity: 1;
@@ -467,19 +467,19 @@ tfoot {
 }
 tfoot td {
     padding: 15px;
-    color: var(--orange-color);
+    color: #c2694e;
     font-weight: 600;
     font-size: 15px;
 }
 #total-revenue {
-    color: #33d8a4;
+    color: #1a9a70;
 }
 .tr-amount {
-    color: #e8754c;
+    color: #c25a30;
     font-weight: 700;
 }
 .order-total {
-    color: #38b48d;
+    color: #1a7a5a;
     font-weight: 700;
 }
 .status {
@@ -500,8 +500,8 @@ tfoot td {
     background: #24967280;
 }
 .delivered {
-    background: #9AADBF30;
-    color: #63484460;
+    background: #9AADBF;
+    color: #2d3a44;
 }
 
 .edit-icon{
