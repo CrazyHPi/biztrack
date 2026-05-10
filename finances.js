@@ -115,15 +115,15 @@ function newTransaction(event) {
 
   serialNumberCounter = getNextTransactionId();
 
-  const transaction = {
+    const transaction = {
     trID: serialNumberCounter,
-    trDate,
-    trCategory,
-    trAmount,
-    trNotes,
-  };
+      trDate,
+      trCategory,
+      trAmount,
+      trNotes,
+    };
 
-  transactions.push(transaction);
+    transactions.push(transaction);
   localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
   serialNumberCounter = getNextTransactionId();
   renderTransactions(transactions);
@@ -135,8 +135,8 @@ function newTransaction(event) {
 
     serialNumberCounter++;
     displayExpenses();
-  
-  document.getElementById("transaction-form").reset();
+
+    document.getElementById("transaction-form").reset();
 }
 
 function renderTransactions(transactionsToRender) {
@@ -199,7 +199,7 @@ function displayExpenses() {
     0
   );
 
-  resultElement.innerHTML = `<span>Total Expenses: $${totalExpenses.toFixed(2)}</span>`;
+  resultElement.innerHTML = `<span>${t('totalExpenses')}: $${totalExpenses.toFixed(2)}</span>`;
 }
 
 function editRow(trID) {
@@ -209,14 +209,17 @@ function editRow(trID) {
     return;
   }
 
-  document.getElementById("tr-id").value = trToEdit.trID;
-  document.getElementById("tr-date").value = trToEdit.trDate;
-  document.getElementById("tr-category").value = trToEdit.trCategory;
-  document.getElementById("tr-amount").value = trToEdit.trAmount;
-  document.getElementById("tr-notes").value = trToEdit.trNotes;
-  document.getElementById("submitBtn").textContent = "Update";
-  document.getElementById("transaction-form").style.display = "block";
-}
+    document.getElementById("tr-id").value = trToEdit.trID;
+    document.getElementById("tr-date").value = trToEdit.trDate;
+    document.getElementById("tr-category").value = trToEdit.trCategory;
+    document.getElementById("tr-amount").value = trToEdit.trAmount;
+    document.getElementById("tr-notes").value = trToEdit.trNotes;
+
+    const submitBtn = document.getElementById("submitBtn");
+    submitBtn.textContent = t('update');
+    submitBtn.dataset.mode = 'update';
+    document.getElementById("transaction-form").style.display = "block";
+  }
 
 function deleteTransaction(trID) {
   const indexToDelete = transactions.findIndex(
@@ -261,7 +264,9 @@ function updateTransaction(trID) {
 
         renderTransactions(transactions);
         document.getElementById("transaction-form").reset();
-        document.getElementById("submitBtn").textContent = "Add";
+        const submitBtn = document.getElementById("submitBtn");
+        submitBtn.textContent = t('add');
+        submitBtn.dataset.mode = 'add';
     }
 }
 
