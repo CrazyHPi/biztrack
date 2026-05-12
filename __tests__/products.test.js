@@ -248,7 +248,7 @@ test("newProduct/updateProduct handles localStorage error and validation failure
   const products = require("../products.js");
   products.init();
 
-  jest.spyOn(localStorage, "setItem").mockImplementationOnce(() => { throw new Error("quota"); });
+  jest.spyOn(Storage.prototype, "setItem").mockImplementationOnce(() => { throw new Error("quota"); });
 
   document.getElementById("product-price").value = "-10";
   expect(() => products.newProduct({ preventDefault: jest.fn() })).not.toThrow();
@@ -259,11 +259,10 @@ test("newProduct / updateProduct handles validation failure and localStorage err
   const products = require("../products.js");
   products.init();
 
-  jest.spyOn(localStorage, "setItem").mockImplementationOnce(() => { throw new Error("quota"); });
+  jest.spyOn(Storage.prototype, "setItem").mockImplementationOnce(() => { throw new Error("quota"); });
   jest.spyOn(console, "error").mockImplementation(() => {});
 
   document.getElementById("product-price").value = "-10";
   expect(() => products.newProduct({ preventDefault: jest.fn() })).not.toThrow();
   expect(alert).toHaveBeenCalled();
 });
-

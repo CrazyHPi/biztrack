@@ -138,7 +138,7 @@ test("calculate functions handle empty arrays and invalid data", () => {
   expect(dashboard.calculateRevTotal([])).toBe(0);
   expect(dashboard.calculateCategorySales([])).toEqual({});
 
-  jest.spyOn(localStorage, "getItem").mockReturnValueOnce("invalid json");
+  jest.spyOn(Storage.prototype, "getItem").mockReturnValueOnce("invalid json");
   jest.spyOn(console, "error").mockImplementation(() => {});
   dashboard.renderSummaryCards();
   expect(console.error).toHaveBeenCalled();
