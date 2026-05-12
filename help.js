@@ -12,3 +12,11 @@ function openSidebar() {
 function closeSidebar() {
     document.getElementById('sidebar').style.display = 'none';
 }
+
+// Test result export
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = {
+    openSidebar,
+    closeSidebar
+  };
+}

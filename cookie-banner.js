@@ -9,6 +9,12 @@ function showCookieBanner() {
 }
 
 function createCookieBanner() {
+  //  remove the existing banner to ensure there is always only one instance
+  const existing = document.querySelector(".cookie-banner");
+  if (existing) {
+    existing.remove();
+  }
+
   const banner = document.createElement("div");
   banner.className = "cookie-banner";
   banner.setAttribute("role", "dialog");
@@ -58,3 +64,13 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   createCookieBanner();
 });
+
+
+// Test result export
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = {
+    showCookieBanner,
+    createCookieBanner
+  };
+}
+

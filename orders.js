@@ -502,3 +502,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initOrders();
 });
+
+// Test result export
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = {
+    openSidebar,
+    closeSidebar,
+    openForm,
+    closeForm,
+    validateOrderInput,
+    initOrders,
+    addOrUpdate,
+    newOrder,
+    renderOrders,
+    displayRevenue,
+    editRow,
+    deleteOrder,
+    updateOrder,
+    isDuplicateID,
+    sortTable,
+    performSearch,
+    exportToCSV,
+    generateCSV,
+    escapeCSVCell,
+    formatDecimalForCSV,
+    formatDecimalForDisplay,
+    appendCell,
+    downloadCSV
+  };
+}

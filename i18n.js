@@ -2,12 +2,14 @@ let translations = {};
 let currentLang = localStorage.getItem('bizTrackLang') || 'en';
 
 async function loadLanguage(lang) {
+  // 【修复点】状态更新提前到 fetch 之前，即使加载失败也能立即切换语言
+  currentLang = lang;
+  localStorage.setItem('bizTrackLang', lang);
+  document.documentElement.lang = lang;
+
   try {
     const res = await fetch(`locales/${lang}.json`);
     translations = await res.json();
-    currentLang = lang;
-    localStorage.setItem('bizTrackLang', lang);
-    document.documentElement.lang = lang;
   } catch (e) {
     console.error('Failed to load language:', e);
   }
@@ -59,12 +61,12 @@ function reRenderDynamicContent() {
   if (typeof displayExpenses === 'function') displayExpenses();
 }
 
-function selectLanguage(lang) {
-  loadLanguage(lang).then(() => {
-    translatePage();
-    reRenderDynamicContent();
-    closeAllLanguageDropdowns();
-  });
+async function selectLanguage(lang) {
+  // ensure await in the test
+  await loadLanguage(lang);
+  translatePage();
+  reRenderDynamicContent();
+  closeAllLanguageDropdowns();
 }
 
 function toggleLanguageDropdown(event) {
@@ -97,12 +99,38 @@ document.addEventListener('click', function(event) {
   }
 });
 
-function switchLanguage() {
-  const newLang = currentLang === 'en' ? 'zh' : 'en';
-  selectLanguage(newLang);
+// switchLanguage now support event.target.dataset.lang
+function switchLanguage(event) {
+  event.preventDefault();
+  if (event.stopPropagation) event.stopPropagation();
+
+  const lang = event.target.dataset.lang;
+  if (lang) {
+    selectLanguage(lang);
+  } else { // original logic
+    const newLang = currentLang === 'en' ? 'zh' : 'en';
+    selectLanguage(newLang);
+  }
 }
 
 loadLanguage(currentLang).then(() => {
   translatePage();
   reRenderDynamicContent();
 });
+
+
+
+// Test result export
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = {
+    loadLanguage,
+    t,
+    translatePage,
+    reRenderDynamicContent,
+    selectLanguage,
+    toggleLanguageDropdown,
+    closeAllLanguageDropdowns,
+    switchLanguage
+  };
+}
+

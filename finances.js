@@ -405,3 +405,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initTransactions();
 });
+
+// Test result export
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = {
+    openSidebar,
+    closeSidebar,
+    openForm,
+    closeForm,
+    initTransactions,
+    addOrUpdate,
+    newTransaction,
+    renderTransactions,
+    displayExpenses,
+    editRow,
+    deleteTransaction,
+    updateTransaction,
+    sortTable,
+    performSearch,
+    exportToCSV,
+    generateCSV,
+    escapeCSVCell,
+    formatDecimalForCSV,
+    formatDecimalForDisplay,
+    appendCell,
+    downloadCSV,
+    getNextTransactionId
+  };
+}
