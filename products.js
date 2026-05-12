@@ -414,3 +414,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
 init();
 });
+
+// Test result export
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = {
+    validateProductInput,
+    openSidebar,
+    closeSidebar,
+    openForm,
+    closeForm,
+    init,
+    addOrUpdate,
+    newProduct,
+    renderProducts,
+    editRow,
+    deleteProduct,
+    updateProduct,
+    isDuplicateID,
+    sortTable,
+    performSearch,
+    exportToCSV,
+    generateCSV,
+    escapeCSVCell,
+    formatDecimalForCSV,
+    formatDecimalForDisplay,
+    appendCell,
+    downloadCSV
+  };
+}

@@ -448,3 +448,16 @@ function initializeChart() {
 };
 
 initializeChart();
+
+// Test result export
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = {
+    openSidebar,
+    closeSidebar,
+    renderSummaryCards,
+    calculateExpTotal,
+    calculateRevTotal,
+    calculateCategorySales,
+    initializeChart
+  };
+}
