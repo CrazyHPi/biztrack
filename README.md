@@ -1,10 +1,15 @@
 # 📋 BizTrack Project
+[![CI](https://github.com/CrazyHPi/biztrack/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/CrazyHPi/biztrack/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/github/crazyhpi/biztrack/graph/badge.svg?token=VN96FZE5DX)](https://codecov.io/github/crazyhpi/biztrack)
 
 BizTrack is a web app born from my experience running a small business. It’s a tool designed to simplify managing products, orders, and expenses seamlessly. As a small business owner, I created BizTrack to simplify the complexities of managing products, orders, and expenses. The inspiration for this project came from the challenges I faced in my own business. I wanted to develop a solution that could benefit “myself” and others in a similar situation.
 
 ## 📝 DEMO
 
-Please refer to --- https://sumusa.github.io/biztrack/.
+Vercel deployment: https://cpt304g21.vercel.app/
+
+~~Please refer to --- https://sumusa.github.io/biztrack/~~
+
 
 ## 📷 Screenshots
 
@@ -33,6 +38,14 @@ This project represents my growth, determination, and love for coding. I hope yo
 - HTML
 - CSS
 - JavaScript
+
+---
+
+Testing:
+
+- Jest (jsdom environment)
+- Codecov
+
 
 ## 🤝 Acknowledgments
 
